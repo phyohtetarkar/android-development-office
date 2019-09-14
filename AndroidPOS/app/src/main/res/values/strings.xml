@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">AndroidPOS</string>
+    <string name="edit_category">%s Category</string>
+    <string name="hint_category_name">Category name</string>
+    <string name="save">Save</string>
+
+    <string name="require_category_name">Please enter category name.</string>
+
+    <string name="drawer_open">Drawer Open</string>
+    <string name="drawer_closed">Drawer Closed</string>
+    <string name="hint_product_name">Product name</string>
+    <string name="price">Price</string>
+    <string name="categories">Categories</string>
+    <string name="available">Available</string>
+    <string name="barcode">Barcode</string>
+    <string name="delete">Delete</string>
+</resources>
