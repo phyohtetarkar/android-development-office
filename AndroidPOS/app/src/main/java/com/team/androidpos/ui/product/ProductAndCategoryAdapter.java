@@ -31,7 +31,7 @@ public class ProductAndCategoryAdapter extends PagedListAdapter<ProductAndCatego
 
     private AdapterItemClickListener<ProductAndCategoryVO> adapterItemClickListener;
 
-    ProductAndCategoryAdapter() {
+    public ProductAndCategoryAdapter() {
         super(DIFF_CALLBACK);
     }
 

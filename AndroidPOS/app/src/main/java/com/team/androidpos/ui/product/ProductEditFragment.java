@@ -3,6 +3,7 @@ package com.team.androidpos.ui.product;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +35,7 @@ import com.team.androidpos.databinding.ProductEditBinding;
 import com.team.androidpos.model.entity.Category;
 import com.team.androidpos.model.entity.Product;
 import com.team.androidpos.ui.MainActivity;
+import com.team.androidpos.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,6 +50,7 @@ public class ProductEditFragment extends Fragment {
     static final String KEY_PRODUCT_ID = "product_id";
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int PERMISSION_TAKE_PHOTO = 2;
+    private static final int REQUEST_PICK_IMAGE = 3;
 
     private ProductEditViewModel viewModel;
     private ProductEditBinding binding;
@@ -146,10 +150,16 @@ public class ProductEditFragment extends Fragment {
 
             View bottomSheetView = getLayoutInflater().inflate(R.layout.layout_take_picture_action, null);
             TextView tvTakePhoto = bottomSheetView.findViewById(R.id.tvTakePhoto);
+            TextView tvPickImage = bottomSheetView.findViewById(R.id.tvChooseGallery);
 
             tvTakePhoto.setOnClickListener(tv -> {
                 dialog.dismiss();
                 dispatchTakePictureIntent();
+            });
+
+            tvPickImage.setOnClickListener(tv -> {
+                dialog.dismiss();
+                dispatchChoosePictureIntent();
             });
 
             dialog.setContentView(bottomSheetView);
@@ -176,6 +186,16 @@ public class ProductEditFragment extends Fragment {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK && currentPhotoFilePath != null) {
             binding.btnTakePhoto.setImageURI(Uri.parse(currentPhotoFilePath));
             viewModel.product.getValue().setImage(currentPhotoFilePath);
+        } else if (requestCode == REQUEST_PICK_IMAGE && resultCode == RESULT_OK) {
+            Uri photoURI = data.getData();
+            try {
+                Bitmap bitmap = FileUtil.writeImage(requireContext(), photoURI, createImageFile());
+                binding.btnTakePhoto.setImageBitmap(bitmap);
+                viewModel.product.getValue().setImage(currentPhotoFilePath);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            }
         } else if (result != null) {
             if (result.getContents() != null) {
                 Product product = viewModel.product.getValue();
@@ -229,6 +249,18 @@ public class ProductEditFragment extends Fragment {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
         }
+    }
+
+    private void dispatchChoosePictureIntent() {
+        Intent contentIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        contentIntent.setType("image/*");
+
+        Intent pickImageIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        Intent chooserIntent = Intent.createChooser(contentIntent, "Select Image Browser");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickImageIntent});
+
+        startActivityForResult(chooserIntent, REQUEST_PICK_IMAGE);
     }
 
     private File createImageFile() throws IOException {

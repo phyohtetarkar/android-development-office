@@ -4,7 +4,10 @@ import androidx.lifecycle.LiveData;
 import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Query;
+import androidx.room.RawQuery;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
+import com.team.androidpos.model.entity.Category;
 import com.team.androidpos.model.entity.Product;
 import com.team.androidpos.model.vo.ProductAndCategoryVO;
 
@@ -23,5 +26,8 @@ public interface ProductDao extends CudDao<Product> {
     @Query("SELECT p.id, p.name, p.image, p.price, c.name AS category FROM Product p " +
             "LEFT JOIN Category c ON p.category_id = c.id ")
     DataSource.Factory<Integer, ProductAndCategoryVO> findProductAndCategory();
+
+    @RawQuery(observedEntities = {Product.class, Category.class})
+    DataSource.Factory<Integer, ProductAndCategoryVO> findProductAndCategory(SupportSQLiteQuery query);
 
 }
