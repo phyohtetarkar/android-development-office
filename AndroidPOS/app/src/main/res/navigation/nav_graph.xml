@@ -32,10 +32,18 @@
         <action
             android:id="@+id/action_saleProductsFragment_to_barcodeScanFragment"
             app:destination="@id/barcodeScanFragment" />
+        <action
+            android:id="@+id/action_saleProductsFragment_to_saleDetailFragment"
+            app:destination="@id/saleDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/barcodeScanFragment"
         android:name="com.team.androidpos.ui.sale.BarcodeScanFragment"
         android:label="fragment_barcode_scan"
         tools:layout="@layout/fragment_barcode_scan" />
+    <fragment
+        android:id="@+id/saleDetailFragment"
+        android:name="com.team.androidpos.ui.sale.SaleDetailFragment"
+        android:label="fragment_sale_detail"
+        tools:layout="@layout/fragment_sale_detail" />
 </navigation>
