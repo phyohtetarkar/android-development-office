@@ -4,8 +4,8 @@
 
     <item android:id="@+id/action_cart"
         android:title="Cart"
-        android:icon="@drawable/ic_shopping_cart_white"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        app:actionLayout="@layout/layout_receipt_noti"/>
 
     <item
         android:id="@+id/action_filter"

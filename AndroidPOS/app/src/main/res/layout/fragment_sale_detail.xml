@@ -11,11 +11,11 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="70dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/layout_sale_detail" />
+        tools:listitem="@layout/layout_sale_product" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="512dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         app:behavior_hideable="false"
         app:behavior_peekHeight="64dp"
