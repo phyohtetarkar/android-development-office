@@ -1,15 +1,19 @@
 package com.team.androidpos.model.entity;
 
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
+import com.team.androidpos.BR;
 
 import org.joda.time.LocalDateTime;
 
 import java.util.Objects;
 
 @Entity
-public class Sale {
+public class Sale extends BaseObservable {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
@@ -71,8 +75,11 @@ public class Sale {
 
     public void setPayPrice(double payPrice) {
         this.payPrice = payPrice;
+        this.change = payPrice > 0 ? (payPrice - totalPrice) : 0;
+        notifyPropertyChanged(BR.change);
     }
 
+    @Bindable
     public double getChange() {
         return change;
     }

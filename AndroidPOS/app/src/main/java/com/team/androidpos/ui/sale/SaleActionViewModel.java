@@ -24,7 +24,9 @@ public class SaleActionViewModel extends AndroidViewModel {
     private boolean inProgress;
 
     final MutableLiveData<Map<SaleProduct.SaleProductId, SaleProduct>> saleProducts = new MutableLiveData<>();
-    final MutableLiveData<Sale> sale = new MutableLiveData<>();
+
+    public final MutableLiveData<Sale> sale = new MutableLiveData<>();
+    public final MutableLiveData<SaleProduct> editSaleProduct = new MutableLiveData<>();
 
     public SaleActionViewModel(@NonNull Application application) {
         super(application);
@@ -72,6 +74,7 @@ public class SaleActionViewModel extends AndroidViewModel {
         Map<SaleProduct.SaleProductId, SaleProduct> map = saleProducts.getValue();
         if (map != null) {
             map.remove(saleProduct.getId());
+            saleProducts.setValue(map);
             computeSale();
         }
     }
@@ -91,13 +94,38 @@ public class SaleActionViewModel extends AndroidViewModel {
             int count = 0;
             for (SaleProduct sp : map.values()) {
                 count += sp.getQuantity();
-                sum += count * sp.getPrice();
+                sum += sp.getQuantity() * sp.getPrice();
             }
 
             s.setTotalProduct(count);
             s.setTotalPrice(sum);
 
             sale.setValue(s);
+        }
+    }
+
+    void saveEditSaleProduct() {
+        SaleProduct sp = editSaleProduct.getValue();
+        if (sp != null) {
+            Map<SaleProduct.SaleProductId, SaleProduct> map = saleProducts.getValue() != null ?
+                    saleProducts.getValue() : new HashMap<>();
+            map.put(sp.getId(), sp);
+            saleProducts.setValue(map);
+            computeSale();
+        }
+    }
+
+    public void plusQty() {
+        SaleProduct sp = editSaleProduct.getValue();
+        if (sp != null) {
+            sp.setQuantity(sp.getQuantity() + 1);
+        }
+    }
+
+    public void minusQty() {
+        SaleProduct sp = editSaleProduct.getValue();
+        if (sp != null && sp.getQuantity() > 1) {
+            sp.setQuantity(sp.getQuantity() - 1);
         }
     }
 

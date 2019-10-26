@@ -1,10 +1,14 @@
 package com.team.androidpos.model.entity;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+
+import com.team.androidpos.BR;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -25,7 +29,7 @@ import java.util.Objects;
                 childColumns = "sale_id"
         )
 })
-public class SaleProduct {
+public class SaleProduct extends BaseObservable {
 
     @NonNull
     @Embedded
@@ -66,12 +70,15 @@ public class SaleProduct {
         this.price = price;
     }
 
+    @Bindable
     public int getQuantity() {
         return quantity;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+        notifyPropertyChanged(BR.totalPrice);
+        notifyPropertyChanged(BR.quantity);
     }
 
     public long getSaleId() {
@@ -94,6 +101,34 @@ public class SaleProduct {
         DecimalFormat df = new DecimalFormat();
         df.setRoundingMode(RoundingMode.CEILING);
         return String.format(Locale.ENGLISH, "%d x %s", quantity, df.format(price));
+    }
+
+    @Bindable
+    public double getTotalPrice() {
+        return quantity * price;
+    }
+
+    public SaleProduct copy() {
+        SaleProduct sp = new SaleProduct();
+        sp.setId(id);
+        sp.setQuantity(quantity);
+        sp.setCategory(category);
+        sp.setSaleId(saleId);
+        sp.setPrice(price);
+        sp.setName(name);
+        return sp;
+    }
+
+    @Override
+    public String toString() {
+        return "SaleProduct{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", category='" + category + '\'' +
+                ", saleId=" + saleId +
+                '}';
     }
 
     public class SaleProductId {
@@ -145,12 +180,14 @@ public class SaleProduct {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SaleProduct that = (SaleProduct) o;
-        return id.equals(that.id) &&
+        return quantity == that.quantity &&
+                saleId == that.saleId &&
+                id.equals(that.id) &&
                 Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, name, quantity, saleId);
     }
 }

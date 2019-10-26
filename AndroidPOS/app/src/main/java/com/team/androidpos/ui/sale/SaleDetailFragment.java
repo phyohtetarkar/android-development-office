@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.team.androidpos.R;
@@ -27,7 +29,8 @@ public class SaleDetailFragment extends ListFragment {
         if (adapter == null) {
             adapter = new SaleProductAdapter();
             adapter.setAdapterItemClickListener(saleProduct -> {
-                // TODO
+                saleActionViewModel.editSaleProduct.setValue(saleProduct.copy());
+                Navigation.findNavController(getView()).navigate(R.id.action_saleDetailFragment_to_saleProductEditFragment);
             });
         }
         return adapter;
@@ -55,6 +58,16 @@ public class SaleDetailFragment extends ListFragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        Button btnCheckout = view.findViewById(R.id.btnCheckout);
+        btnCheckout.setOnClickListener(v -> {
+            Navigation.findNavController(view).navigate(R.id.action_saleDetailFragment_to_completeSaleFragment);
+        });
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         saleActionViewModel.saleProducts.observe(this, map -> {
@@ -78,5 +91,10 @@ public class SaleDetailFragment extends ListFragment {
         MainActivity activity = (MainActivity) requireActivity();
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         activity.switchToggle(true);
+    }
+
+    @Override
+    protected void deleteItemAt(int position) {
+        saleActionViewModel.removeProduct(adapter.getItemAt(position));
     }
 }

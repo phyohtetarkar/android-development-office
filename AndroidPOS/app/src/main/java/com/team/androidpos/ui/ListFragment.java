@@ -42,6 +42,7 @@ public abstract class ListFragment extends Fragment {
                 new AlertDialog.Builder(requireContext())
                         .setTitle("Confirm Delete")
                         .setMessage("Are you sure to delete?")
+                        .setCancelable(false)
                         .setNegativeButton(android.R.string.cancel, (di, i) -> {
                             adapter().notifyItemChanged(position);
                             di.dismiss();

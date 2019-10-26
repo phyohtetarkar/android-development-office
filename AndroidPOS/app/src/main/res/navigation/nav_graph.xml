@@ -45,5 +45,22 @@
         android:id="@+id/saleDetailFragment"
         android:name="com.team.androidpos.ui.sale.SaleDetailFragment"
         android:label="fragment_sale_detail"
-        tools:layout="@layout/fragment_sale_detail" />
+        tools:layout="@layout/fragment_sale_detail" >
+        <action
+            android:id="@+id/action_saleDetailFragment_to_saleProductEditFragment"
+            app:destination="@id/saleProductEditFragment" />
+        <action
+            android:id="@+id/action_saleDetailFragment_to_completeSaleFragment"
+            app:destination="@id/completeSaleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/saleProductEditFragment"
+        android:name="com.team.androidpos.ui.sale.SaleProductEditFragment"
+        android:label="SaleProductEditFragment"
+        tools:layout="@layout/fragment_sale_product_edit"/>
+    <fragment
+        android:id="@+id/completeSaleFragment"
+        android:name="com.team.androidpos.ui.sale.CompleteSaleFragment"
+        android:label="CompleteSaleFragment"
+        tools:layout="@layout/fragment_complete_sale"/>
 </navigation>

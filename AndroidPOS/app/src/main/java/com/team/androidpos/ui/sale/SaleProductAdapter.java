@@ -54,6 +54,10 @@ public class SaleProductAdapter extends ListAdapter<SaleProduct, SaleProductAdap
         this.adapterItemClickListener = adapterItemClickListener;
     }
 
+    public SaleProduct getItemAt(int position) {
+        return getItem(position);
+    }
+
     class SaleProductViewHolder extends RecyclerView.ViewHolder {
 
         private ViewDataBinding binding;
@@ -61,6 +65,9 @@ public class SaleProductAdapter extends ListAdapter<SaleProduct, SaleProductAdap
         SaleProductViewHolder(@NonNull ViewDataBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
+            itemView.setOnClickListener(v -> {
+                if (adapterItemClickListener != null) adapterItemClickListener.onClick(getItem(getAdapterPosition()));
+            });
         }
 
         void bind(SaleProduct obj) {
