@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +24,8 @@ public class SaleProductsFragment extends ListFragment {
 
     private ProductAndCategoryAdapter adapter;
     private SaleProductsViewModel viewModel;
+    private SaleActionViewModel saleActionViewModel;
+    private View notiView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,9 +34,10 @@ public class SaleProductsFragment extends ListFragment {
 
         adapter = new ProductAndCategoryAdapter();
         adapter.setAdapterItemClickListener(vo -> {
-            // TODO
+            saleActionViewModel.addProduct(vo);
         });
 
+        saleActionViewModel = ViewModelProviders.of(requireActivity()).get(SaleActionViewModel.class);
         viewModel = ViewModelProviders.of(this).get(SaleProductsViewModel.class);
         viewModel.products.observe(this, adapter::submitList);
     }
@@ -41,6 +45,25 @@ public class SaleProductsFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.menu_sale, menu);
+        notiView = menu.findItem(R.id.action_cart).getActionView();
+        notiView.setOnClickListener(v -> {
+            Navigation.findNavController(getView()).navigate(R.id.action_saleProductsFragment_to_saleDetailFragment);
+        });
+
+        saleActionViewModel.sale.observe(this, sale -> {
+            if (notiView == null) {
+                return;
+            }
+
+            TextView tvCount = notiView.findViewById(R.id.tvSaleProductCount);
+            if (sale.getTotalProduct() > 0) {
+                tvCount.setText(String.valueOf(sale.getTotalProduct()));
+                tvCount.setVisibility(View.VISIBLE);
+            } else {
+                tvCount.setVisibility(View.GONE);
+            }
+        });
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -75,6 +98,7 @@ public class SaleProductsFragment extends ListFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel.categoryId.setValue(null);
+        saleActionViewModel.init();
     }
 
     @Override

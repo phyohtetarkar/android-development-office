@@ -20,6 +20,11 @@ public interface ProductDao extends CudDao<Product> {
     @Query("SELECT * FROM Product WHERE id = :id LIMIT 1")
     LiveData<Product> findById(int id);
 
+    @Query("SELECT p.id, p.name, p.image, p.price, c.name AS category FROM Product p " +
+            "LEFT JOIN Category c ON p.category_id = c.id " +
+            "WHERE p.barcode = :barcode LIMIT 1")
+    ProductAndCategoryVO findByBarcode(String barcode);
+
     @Query("SELECT * FROM Product")
     DataSource.Factory<Integer, Product> findAll();
 

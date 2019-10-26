@@ -5,12 +5,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatToggleButton;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.ResultPoint;
@@ -26,6 +26,7 @@ import java.util.List;
 
 public class BarcodeScanFragment extends Fragment {
 
+    private SaleActionViewModel saleActionViewModel;
     private DecoratedBarcodeView barcodeView;
     private BeepManager beepManager;
     private String lastCode;
@@ -34,6 +35,7 @@ public class BarcodeScanFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         beepManager = new BeepManager(requireActivity());
+        saleActionViewModel = ViewModelProviders.of(requireActivity()).get(SaleActionViewModel.class);
     }
 
     @Nullable
@@ -61,6 +63,8 @@ public class BarcodeScanFragment extends Fragment {
                 // TODO
                 Log.d("TAG", "code: " + result.getText());
                 beepManager.playBeepSound();
+
+                saleActionViewModel.findByBarcode(result.getText());
             }
 
             @Override

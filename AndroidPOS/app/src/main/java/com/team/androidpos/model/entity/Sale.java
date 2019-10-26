@@ -6,6 +6,8 @@ import androidx.room.PrimaryKey;
 
 import org.joda.time.LocalDateTime;
 
+import java.util.Objects;
+
 @Entity
 public class Sale {
 
@@ -19,6 +21,9 @@ public class Sale {
     private int totalProduct;
     @ColumnInfo(name = "sale_date_time")
     private LocalDateTime saleDateTime;
+    @ColumnInfo(name = "pay_price")
+    private double payPrice;
+    private double change;
 
     public long getId() {
         return id;
@@ -58,5 +63,40 @@ public class Sale {
 
     public void setSaleDateTime(LocalDateTime saleDateTime) {
         this.saleDateTime = saleDateTime;
+    }
+
+    public double getPayPrice() {
+        return payPrice;
+    }
+
+    public void setPayPrice(double payPrice) {
+        this.payPrice = payPrice;
+    }
+
+    public double getChange() {
+        return change;
+    }
+
+    public void setChange(double change) {
+        this.change = change;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Sale sale = (Sale) o;
+        return id == sale.id &&
+                Double.compare(sale.totalPrice, totalPrice) == 0 &&
+                totalProduct == sale.totalProduct &&
+                Double.compare(sale.payPrice, payPrice) == 0 &&
+                Double.compare(sale.change, change) == 0 &&
+                Objects.equals(voucherCode, sale.voucherCode) &&
+                Objects.equals(saleDateTime, sale.saleDateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, voucherCode, totalPrice, totalProduct, saleDateTime, payPrice, change);
     }
 }

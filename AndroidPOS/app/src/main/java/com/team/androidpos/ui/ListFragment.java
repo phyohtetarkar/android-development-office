@@ -58,8 +58,9 @@ public abstract class ListFragment extends Fragment {
         }
 
         FloatingActionButton fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(this::onFabClick);
-
+        if (fab != null) {
+            fab.setOnClickListener(this::onFabClick);
+        }
         // TODO hide/show on recyclerView scroll
 
     }

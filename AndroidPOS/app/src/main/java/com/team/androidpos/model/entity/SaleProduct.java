@@ -1,10 +1,14 @@
 package com.team.androidpos.model.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.Locale;
 import java.util.Objects;
 
 @Entity(tableName = "sale_product",
@@ -23,11 +27,13 @@ import java.util.Objects;
 })
 public class SaleProduct {
 
+    @NonNull
     @Embedded
     private SaleProductId id;
     private String name;
     private double price;
     private int quantity;
+    private String category;
 
     @ColumnInfo(name = "sale_id")
     private long saleId;
@@ -74,6 +80,20 @@ public class SaleProduct {
 
     public void setSaleId(long saleId) {
         this.saleId = saleId;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getPriceAndCount() {
+        DecimalFormat df = new DecimalFormat();
+        df.setRoundingMode(RoundingMode.CEILING);
+        return String.format(Locale.ENGLISH, "%d x %s", quantity, df.format(price));
     }
 
     public class SaleProductId {
@@ -125,14 +145,12 @@ public class SaleProduct {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SaleProduct that = (SaleProduct) o;
-        return Double.compare(that.price, price) == 0 &&
-                quantity == that.quantity &&
-                Objects.equals(id, that.id) &&
+        return id.equals(that.id) &&
                 Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, price, quantity);
+        return Objects.hash(id, name);
     }
 }

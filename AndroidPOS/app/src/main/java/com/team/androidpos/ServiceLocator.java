@@ -7,6 +7,7 @@ import androidx.room.Room;
 import com.team.androidpos.model.PosDatabase;
 import com.team.androidpos.model.repo.CategoryRepo;
 import com.team.androidpos.model.repo.ProductRepo;
+import com.team.androidpos.model.repo.SaleRepo;
 
 public abstract class ServiceLocator {
 
@@ -14,6 +15,7 @@ public abstract class ServiceLocator {
 
     public abstract CategoryRepo categoryRepo();
     public abstract ProductRepo productRepo();
+    public abstract SaleRepo saleRepo();
 
     public static ServiceLocator getInstance(Context context) {
         if (instance == null) {
@@ -27,9 +29,10 @@ public abstract class ServiceLocator {
         private PosDatabase database;
         private CategoryRepo categoryRepo;
         private ProductRepo productRepo;
+        private SaleRepo saleRepo;
 
         DefaultServiceLocator(Context context) {
-            database = Room.inMemoryDatabaseBuilder(context, PosDatabase.class).build();
+            database = Room.databaseBuilder(context, PosDatabase.class, "android-pos").build();
         }
 
         @Override
@@ -46,6 +49,14 @@ public abstract class ServiceLocator {
                 productRepo = new ProductRepo(database.productDao());
             }
             return productRepo;
+        }
+
+        @Override
+        public SaleRepo saleRepo() {
+            if (saleRepo == null) {
+                saleRepo = new SaleRepo(database.saleDao());
+            }
+            return saleRepo;
         }
 
     }

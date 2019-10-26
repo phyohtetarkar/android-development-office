@@ -7,7 +7,6 @@ import androidx.paging.PagedList;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 
 import com.team.androidpos.model.dao.ProductDao;
-import com.team.androidpos.model.entity.Category;
 import com.team.androidpos.model.entity.Product;
 import com.team.androidpos.model.vo.ProductAndCategoryVO;
 
@@ -65,6 +64,10 @@ public class ProductRepo extends CudRepo<Product> {
         SimpleSQLiteQuery query = new SimpleSQLiteQuery(sb.toString(), params.toArray());
 
         return new LivePagedListBuilder<>(dao.findProductAndCategory(query), 25).build();
+    }
+
+    public ProductAndCategoryVO findByBarcode(String barcode) {
+        return dao.findByBarcode(barcode);
     }
 
 }
