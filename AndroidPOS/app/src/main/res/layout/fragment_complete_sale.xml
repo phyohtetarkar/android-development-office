@@ -120,13 +120,14 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/button7"
+            android:id="@+id/btnCompleteSale"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:text="Complete Sale"
+            android:enabled="@{viewModel.sale.change >= 0 &amp;&amp; viewModel.sale.payPrice > 0}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline" />

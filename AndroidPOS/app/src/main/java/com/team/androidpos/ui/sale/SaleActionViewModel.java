@@ -14,6 +14,7 @@ import com.team.androidpos.model.repo.SaleRepo;
 import com.team.androidpos.model.vo.ProductAndCategoryVO;
 import com.team.androidpos.util.AppExecutors;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +25,7 @@ public class SaleActionViewModel extends AndroidViewModel {
     private boolean inProgress;
 
     final MutableLiveData<Map<SaleProduct.SaleProductId, SaleProduct>> saleProducts = new MutableLiveData<>();
+    final MutableLiveData<Boolean> saleResult = new MutableLiveData<>();
 
     public final MutableLiveData<Sale> sale = new MutableLiveData<>();
     public final MutableLiveData<SaleProduct> editSaleProduct = new MutableLiveData<>();
@@ -37,6 +39,7 @@ public class SaleActionViewModel extends AndroidViewModel {
     void init() {
         if (!inProgress) {
             sale.setValue(new Sale());
+            saleProducts.setValue(new HashMap<>());
             inProgress = true;
         }
     }
@@ -80,9 +83,18 @@ public class SaleActionViewModel extends AndroidViewModel {
     }
 
     void finishSale() {
-        inProgress = false;
-        saleProducts.setValue(null);
-        sale.setValue(null);
+        AppExecutors.io().execute(() -> {
+            try {
+                saleRepo.save(sale.getValue(), new ArrayList<>(saleProducts.getValue().values()));
+                inProgress = false;
+                saleProducts.postValue(null);
+                sale.postValue(null);
+                saleResult.postValue(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                saleResult.postValue(false);
+            }
+        });
     }
 
     void computeSale() {
@@ -129,4 +141,7 @@ public class SaleActionViewModel extends AndroidViewModel {
         }
     }
 
+    public boolean isInProgress() {
+        return inProgress;
+    }
 }

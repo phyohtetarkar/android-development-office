@@ -76,9 +76,11 @@ public class SaleProduct extends BaseObservable {
     }
 
     public void setQuantity(int quantity) {
-        this.quantity = quantity;
-        notifyPropertyChanged(BR.totalPrice);
-        notifyPropertyChanged(BR.quantity);
+        if (this.quantity != quantity) {
+            this.quantity = quantity;
+            notifyPropertyChanged(BR.totalPrice);
+            notifyPropertyChanged(BR.quantity);
+        }
     }
 
     public long getSaleId() {

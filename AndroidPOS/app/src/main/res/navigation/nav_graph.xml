@@ -63,4 +63,9 @@
         android:name="com.team.androidpos.ui.sale.CompleteSaleFragment"
         android:label="CompleteSaleFragment"
         tools:layout="@layout/fragment_complete_sale"/>
+    <fragment
+        android:id="@+id/saleHistoryFragment"
+        android:name="com.team.androidpos.ui.sale.SaleHistoryFragment"
+        android:label="SaleHistoryFragment"
+        tools:layout="@layout/fragment_list_item"/>
 </navigation>

@@ -10,5 +10,8 @@
         <item
             android:id="@+id/categoriesFragment"
             android:title="Categories" />
+        <item
+            android:id="@+id/saleHistoryFragment"
+            android:title="Sale History" />
     </group>
 </menu>

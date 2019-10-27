@@ -88,6 +88,10 @@ public class Sale extends BaseObservable {
         this.change = change;
     }
 
+    public String getFormattedDateTime() {
+        return saleDateTime.toString("MMM dd, yyyy hh:mm a");
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -14,10 +14,12 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.team.androidpos.R;
+import com.team.androidpos.model.entity.SaleProduct;
 import com.team.androidpos.ui.ListFragment;
 import com.team.androidpos.ui.MainActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SaleDetailFragment extends ListFragment {
 
@@ -71,7 +73,8 @@ public class SaleDetailFragment extends ListFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         saleActionViewModel.saleProducts.observe(this, map -> {
-            adapter.submitList(new ArrayList<>(map.values()));
+            List<SaleProduct> list = new ArrayList<>(map.values());
+            adapter.submitList(list);
         });
 
         saleActionViewModel.sale.observe(this, sale -> {
@@ -82,6 +85,9 @@ public class SaleDetailFragment extends ListFragment {
 
             TextView tvTotalPrice = view.findViewById(R.id.tvTotalPrice);
             tvTotalPrice.setText(String.valueOf(sale.getTotalPrice()));
+
+            Button btnCheckout = view.findViewById(R.id.btnCheckout);
+            btnCheckout.setEnabled(sale.getTotalPrice() > 0);
         });
     }
 

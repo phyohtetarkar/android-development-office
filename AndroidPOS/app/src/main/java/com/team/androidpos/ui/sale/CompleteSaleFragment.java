@@ -9,7 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 
+import com.team.androidpos.R;
 import com.team.androidpos.databinding.CompleteSaleBinding;
 
 public class CompleteSaleFragment extends Fragment {
@@ -21,6 +23,9 @@ public class CompleteSaleFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         saleActionViewModel = ViewModelProviders.of(requireActivity()).get(SaleActionViewModel.class);
+        saleActionViewModel.saleResult.observe(this, result -> {
+            if (result && !saleActionViewModel.isInProgress()) Navigation.findNavController(getView()).popBackStack(R.id.saleProductsFragment, false);
+        });
     }
 
     @Nullable
@@ -32,4 +37,11 @@ public class CompleteSaleFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        binding.btnCompleteSale.setOnClickListener(v -> {
+            saleActionViewModel.finishSale();
+        });
+    }
 }
