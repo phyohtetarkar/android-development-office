@@ -25,7 +25,7 @@ public class SaleActionViewModel extends AndroidViewModel {
     private boolean inProgress;
 
     final MutableLiveData<Map<SaleProduct.SaleProductId, SaleProduct>> saleProducts = new MutableLiveData<>();
-    final MutableLiveData<Boolean> saleResult = new MutableLiveData<>();
+    final MutableLiveData<Long> saleResult = new MutableLiveData<>();
 
     public final MutableLiveData<Sale> sale = new MutableLiveData<>();
     public final MutableLiveData<SaleProduct> editSaleProduct = new MutableLiveData<>();
@@ -85,14 +85,14 @@ public class SaleActionViewModel extends AndroidViewModel {
     void finishSale() {
         AppExecutors.io().execute(() -> {
             try {
-                saleRepo.save(sale.getValue(), new ArrayList<>(saleProducts.getValue().values()));
+                long saleId = saleRepo.save(sale.getValue(), new ArrayList<>(saleProducts.getValue().values()));
                 inProgress = false;
                 saleProducts.postValue(null);
                 sale.postValue(null);
-                saleResult.postValue(true);
+                saleResult.postValue(saleId);
             } catch (Exception e) {
                 e.printStackTrace();
-                saleResult.postValue(false);
+                saleResult.postValue(null);
             }
         });
     }

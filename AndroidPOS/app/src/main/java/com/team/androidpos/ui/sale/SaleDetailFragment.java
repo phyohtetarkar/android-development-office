@@ -46,10 +46,6 @@ public class SaleDetailFragment extends ListFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity activity = (MainActivity) requireActivity();
-        activity.switchToggle(false);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         saleActionViewModel = ViewModelProviders.of(requireActivity()).get(SaleActionViewModel.class);
     }
 
@@ -70,8 +66,17 @@ public class SaleDetailFragment extends ListFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity activity = (MainActivity) requireActivity();
+        activity.switchToggle(false);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         saleActionViewModel.saleProducts.observe(this, map -> {
             List<SaleProduct> list = new ArrayList<>(map.values());
             adapter.submitList(list);
@@ -89,14 +94,6 @@ public class SaleDetailFragment extends ListFragment {
             Button btnCheckout = view.findViewById(R.id.btnCheckout);
             btnCheckout.setEnabled(sale.getTotalPrice() > 0);
         });
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        MainActivity activity = (MainActivity) requireActivity();
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        activity.switchToggle(true);
     }
 
     @Override

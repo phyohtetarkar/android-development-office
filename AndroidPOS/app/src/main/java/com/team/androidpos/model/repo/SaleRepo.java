@@ -18,12 +18,20 @@ public class SaleRepo {
         this.dao = dao;
     }
 
-    public void save(Sale sale, List<SaleProduct> list) {
-        dao.save(sale, list);
+    public long save(Sale sale, List<SaleProduct> list) {
+        return dao.save(sale, list);
     }
 
     public LiveData<PagedList<Sale>> findAll() {
         return new LivePagedListBuilder<>(dao.findAll(), 3).build();
+    }
+
+    public LiveData<Sale> getSale(long id) {
+        return dao.findById(id);
+    }
+
+    public LiveData<List<SaleProduct>> getSaleProducts(long saleId) {
+        return dao.findSaleProducts(saleId);
     }
 
 }

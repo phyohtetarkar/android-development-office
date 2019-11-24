@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.team.androidpos.R;
 import com.team.androidpos.ui.ListFragment;
+import com.team.androidpos.ui.MainActivity;
 import com.team.androidpos.ui.product.ProductAndCategoryAdapter;
 import com.team.androidpos.util.PermissionUtil;
 
@@ -99,6 +100,10 @@ public class SaleProductsFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         viewModel.categoryId.setValue(null);
         saleActionViewModel.init();
+
+        MainActivity activity = (MainActivity) requireActivity();
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        activity.switchToggle(true);
     }
 
     @Override

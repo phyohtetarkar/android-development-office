@@ -17,7 +17,13 @@ public class BindingUtil {
 
     @BindingAdapter("android:text")
     public static void setNumber(TextView textView, double value) {
-        textView.setText(String.valueOf(value));
+        int abs = (int) value;
+        if ((value - abs) > 0.0) {
+            textView.setText(String.valueOf(value));
+        } else {
+            textView.setText(String.valueOf(abs));
+        }
+
     }
 
     @BindingAdapter("android:text")

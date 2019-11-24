@@ -18,17 +18,17 @@ import java.util.Objects;
 @Entity(tableName = "sale_product",
         primaryKeys = {"product_id", "sale_time"},
         foreignKeys = {
-        @ForeignKey(
-                entity = Product.class,
-                parentColumns = "id",
-                childColumns = "product_id"
-        ),
-        @ForeignKey(
-                entity = Sale.class,
-                parentColumns = "id",
-                childColumns = "sale_id"
-        )
-})
+                @ForeignKey(
+                        entity = Product.class,
+                        parentColumns = "id",
+                        childColumns = "product_id"
+                ),
+                @ForeignKey(
+                        entity = Sale.class,
+                        parentColumns = "id",
+                        childColumns = "sale_id"
+                )
+        })
 public class SaleProduct extends BaseObservable {
 
     @NonNull
@@ -110,6 +110,12 @@ public class SaleProduct extends BaseObservable {
         return quantity * price;
     }
 
+    public String getProductDescription() {
+        DecimalFormat df = new DecimalFormat();
+        df.setRoundingMode(RoundingMode.CEILING);
+        return String.format(Locale.ENGLISH, "%s @%s", name, df.format(price));
+    }
+
     public SaleProduct copy() {
         SaleProduct sp = new SaleProduct();
         sp.setId(id);
@@ -133,13 +139,14 @@ public class SaleProduct extends BaseObservable {
                 '}';
     }
 
-    public class SaleProductId {
+    public static class SaleProductId {
         @ColumnInfo(name = "product_id")
         private int productId;
         @ColumnInfo(name = "sale_time")
         private long saleTime;
 
-        public SaleProductId() {}
+        public SaleProductId() {
+        }
 
         public SaleProductId(int productId, long saleTime) {
             this.productId = productId;

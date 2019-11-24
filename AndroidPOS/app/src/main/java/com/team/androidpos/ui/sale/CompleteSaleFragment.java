@@ -13,6 +13,7 @@ import androidx.navigation.Navigation;
 
 import com.team.androidpos.R;
 import com.team.androidpos.databinding.CompleteSaleBinding;
+import com.team.androidpos.ui.MainActivity;
 
 public class CompleteSaleFragment extends Fragment {
 
@@ -23,8 +24,12 @@ public class CompleteSaleFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         saleActionViewModel = ViewModelProviders.of(requireActivity()).get(SaleActionViewModel.class);
-        saleActionViewModel.saleResult.observe(this, result -> {
-            if (result && !saleActionViewModel.isInProgress()) Navigation.findNavController(getView()).popBackStack(R.id.saleProductsFragment, false);
+        saleActionViewModel.saleResult.observe(this, saleId -> {
+            if (saleId != null && !saleActionViewModel.isInProgress()) {
+                Bundle args = new Bundle();
+                args.putLong(SaleReceiptFragment.KEY_SALE_ID, saleId);
+                Navigation.findNavController(getView()).navigate(R.id.action_completeSaleFragment_to_saleReceiptFragment, args);
+            }
         });
     }
 
@@ -43,5 +48,13 @@ public class CompleteSaleFragment extends Fragment {
         binding.btnCompleteSale.setOnClickListener(v -> {
             saleActionViewModel.finishSale();
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity activity = (MainActivity) requireActivity();
+        activity.switchToggle(false);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
