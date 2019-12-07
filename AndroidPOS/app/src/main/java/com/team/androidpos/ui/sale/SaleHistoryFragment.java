@@ -6,11 +6,13 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.team.androidpos.R;
 import com.team.androidpos.ui.ListFragment;
+import com.team.androidpos.ui.MainActivity;
 
 public class SaleHistoryFragment extends ListFragment {
 
@@ -32,7 +34,10 @@ public class SaleHistoryFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         adapter = new SaleAdapter();
         adapter.setAdapterItemClickListener(sale -> {
-            // TODO
+            Bundle args = new Bundle();
+            args.putLong(SaleReceiptFragment.KEY_SALE_ID, sale.getId());
+            args.putInt(SaleReceiptFragment.KEY_NAV_BACK, SaleReceiptFragment.NAV_SALE_HISTORY);
+            Navigation.findNavController(getView()).navigate(R.id.action_saleHistoryFragment_to_saleReceiptFragment, args);
         });
 
         viewModel = ViewModelProviders.of(this).get(SaleHistoryViewModel.class);
@@ -43,6 +48,10 @@ public class SaleHistoryFragment extends ListFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel.dateTime.setValue(null);
+
+        MainActivity activity = (MainActivity) requireActivity();
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        activity.switchToggle(true);
     }
 
     @Override

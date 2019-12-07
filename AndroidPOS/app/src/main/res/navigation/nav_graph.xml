@@ -71,7 +71,11 @@
         android:id="@+id/saleHistoryFragment"
         android:name="com.team.androidpos.ui.sale.SaleHistoryFragment"
         android:label="SaleHistoryFragment"
-        tools:layout="@layout/fragment_list_item"/>
+        tools:layout="@layout/fragment_list_item">
+        <action
+            android:id="@+id/action_saleHistoryFragment_to_saleReceiptFragment"
+            app:destination="@id/saleReceiptFragment" />
+    </fragment>
     <fragment
         android:id="@+id/saleReceiptFragment"
         android:name="com.team.androidpos.ui.sale.SaleReceiptFragment"

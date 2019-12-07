@@ -23,6 +23,10 @@ import com.team.androidpos.ui.MainActivity;
 public class SaleReceiptFragment extends Fragment {
 
     static final String KEY_SALE_ID = "sale_id";
+    static final String KEY_NAV_BACK = "nav_back";
+
+    static final int NAV_SALE_PRODUCT = 1;
+    static final int NAV_SALE_HISTORY = 2;
 
     private SaleReceiptBinding binding;
     private SaleReceiptViewModel viewModel;
@@ -32,11 +36,17 @@ public class SaleReceiptFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         viewModel = ViewModelProviders.of(this).get(SaleReceiptViewModel.class);
+
     }
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_finish, menu);
+        int nav = getArguments() != null ? getArguments().getInt(KEY_NAV_BACK, 1) : 1;
+        if (nav == 1) {
+            inflater.inflate(R.menu.menu_finish, menu);
+            MainActivity activity = (MainActivity) requireActivity();
+            activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
