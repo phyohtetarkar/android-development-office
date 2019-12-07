@@ -81,4 +81,9 @@
         android:name="com.team.androidpos.ui.sale.SaleReceiptFragment"
         android:label="fragment_sale_receipt"
         tools:layout="@layout/fragment_sale_receipt" />
+    <fragment
+        android:id="@+id/saleReportFragment"
+        android:name="com.team.androidpos.ui.report.SaleReportFragment"
+        android:label="fragment_sale_report"
+        tools:layout="@layout/fragment_sale_report" />
 </navigation>

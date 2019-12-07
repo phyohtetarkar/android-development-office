@@ -42,7 +42,7 @@ public class SaleReceiptFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         int nav = getArguments() != null ? getArguments().getInt(KEY_NAV_BACK, 1) : 1;
-        if (nav == 1) {
+        if (nav == NAV_SALE_PRODUCT) {
             inflater.inflate(R.menu.menu_finish, menu);
             MainActivity activity = (MainActivity) requireActivity();
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);

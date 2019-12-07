@@ -3,19 +3,20 @@ package com.team.androidpos.model;
 
 import androidx.room.TypeConverter;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
 
 public class TypeConverters {
 
     @TypeConverter
-    public static String fromDateTime(LocalDateTime dateTime) {
-        return dateTime.toString("MMM dd, yyyy hh:mm a");
+    public static long fromDateTime(LocalDateTime dateTime) {
+        return dateTime.toDateTime(DateTimeZone.getDefault()).getMillis();
     }
 
     @TypeConverter
-    public static LocalDateTime toDateTime(String value) {
-        return LocalDateTime.parse(value, DateTimeFormat.forPattern("MMM dd, yyyy hh:mm a"));
+    public static LocalDateTime toDateTime(long value) {
+        return new DateTime(value, DateTimeZone.getDefault()).toLocalDateTime();
     }
 
 }

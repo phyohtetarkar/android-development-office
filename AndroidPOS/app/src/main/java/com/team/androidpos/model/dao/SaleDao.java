@@ -9,6 +9,7 @@ import androidx.room.Transaction;
 
 import com.team.androidpos.model.entity.Sale;
 import com.team.androidpos.model.entity.SaleProduct;
+import com.team.androidpos.model.vo.SaleReportVO;
 
 import org.joda.time.LocalDateTime;
 
@@ -33,8 +34,14 @@ public abstract class SaleDao implements CudDao<Sale> {
     @Insert
     public abstract void insert(List<SaleProduct> list);
 
-    @Query("SELECT * FROM SALE")
+    @Query("SELECT * FROM SALE ORDER BY sale_date_time DESC")
     public abstract DataSource.Factory<Integer, Sale> findAll();
+
+    @Query("SELECT c.name AS category, SUM(sp.price * sp.quantity) AS price FROM SALE_PRODUCT sp " +
+            "LEFT JOIN PRODUCT p ON p.id = sp.product_id " +
+            "LEFT JOIN CATEGORY c ON c.id = p.category_id " +
+            "GROUP BY c.id, c.name")
+    public abstract LiveData<List<SaleReportVO>> findSaleReport();
 
     @Transaction
     public long save(Sale sale, List<SaleProduct> list) {
