@@ -11,7 +11,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.team.androidpos.R;
 import com.team.androidpos.model.vo.SaleReportVO;
@@ -21,6 +24,7 @@ public class SaleReportFragment extends Fragment {
 
     private SaleReportViewModel viewModel;
     private BarChart barChart;
+    private PieChart pieChart;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +49,20 @@ public class SaleReportFragment extends Fragment {
         barChart.getXAxis().setGranularity(1);
         barChart.getXAxis().setGranularityEnabled(true);
         barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        barChart.setScaleEnabled(false);
         barChart.setDescription(null);
+
+        pieChart = view.findViewById(R.id.pieChart);
+        pieChart.setDescription(null);
+        pieChart.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        pieChart.getLegend().setOrientation(Legend.LegendOrientation.VERTICAL);
+        pieChart.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        pieChart.getLegend().setDirection(Legend.LegendDirection.LEFT_TO_RIGHT);
+        pieChart.setUsePercentValues(true);
+        pieChart.setDrawEntryLabels(false);
+        pieChart.setExtraOffsets(24, 24, 32, 24);
+        pieChart.setHoleRadius(pieChart.getHoleRadius() - 8);
+        pieChart.setTransparentCircleRadius(pieChart.getTransparentCircleRadius() - 8);
     }
 
     @Override
@@ -64,6 +81,18 @@ public class SaleReportFragment extends Fragment {
 
             barChart.setData(ChartDataHelper.toBarChartData(list));
             barChart.animateY(1000);
+
+            PieData pieData = ChartDataHelper.toPieChartData(list);
+            pieChart.setData(pieData);
+            pieChart.setCenterText(String.valueOf(pieData.getYValueSum()));
+            pieChart.animateY(1000);
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        barChart = null;
+        pieChart = null;
     }
 }

@@ -238,8 +238,13 @@ public class ProductEditFragment extends Fragment {
             }
 
             if (photoFile != null) {
+
                 Uri photoURI = FileProvider.getUriForFile(requireContext(),
                         "com.team.androidpos.fileprovider", photoFile);
+
+                // for api 27 (7.0) lower
+                //Uri photoURI = Uri.fromFile(photoFile);
+
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
