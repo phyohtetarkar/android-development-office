@@ -21,6 +21,7 @@ public class ChartDataHelper {
 
         BarDataSet dataSet = new BarDataSet(entries, "");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        dataSet.setValueTextSize(14f);
 
         return new BarData(dataSet);
     }
