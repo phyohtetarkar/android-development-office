@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -23,6 +25,8 @@ import com.team.androidpos.model.vo.SaleReportVO;
 import com.team.androidpos.ui.ChartDataHelper;
 
 import org.joda.time.YearMonth;
+
+import java.text.DateFormatSymbols;
 
 public class SaleReportFragment extends Fragment {
 
@@ -77,6 +81,38 @@ public class SaleReportFragment extends Fragment {
         lineChart.setDrawMarkers(false);
         lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         lineChart.getLegend().setEnabled(false);
+        lineChart.getXAxis().setGranularity(1);
+        lineChart.getXAxis().setGranularityEnabled(true);
+        lineChart.setExtraRightOffset(24);
+        String[] months = DateFormatSymbols.getInstance().getShortMonths();
+        lineChart.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return months[(int) value - 1];
+            }
+        });
+
+
+        int year = YearMonth.now().getYear();
+        int len = year - 2016;
+        CharSequence[] years = new CharSequence[len];
+        for (int i = 0; i < len; i++) {
+            years[i] = String.valueOf(year- i);
+        }
+
+        TextView tvYear = view.findViewById(R.id.tvYear);
+        tvYear.setText(String.valueOf(year));
+        tvYear.setOnClickListener(v -> {
+            AlertDialog dialog = new AlertDialog.Builder(v.getContext())
+                    .setTitle("Choose Year")
+                    .setSingleChoiceItems(years, year - viewModel.year.getValue(), (di, i) -> {
+                        viewModel.year.setValue(Integer.parseInt(years[i].toString()));
+                        tvYear.setText(years[i]);
+                        di.dismiss();
+                    }).create();
+            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+            dialog.show();
+        });
     }
 
     @Override
