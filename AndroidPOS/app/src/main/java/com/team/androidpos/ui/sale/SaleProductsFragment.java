@@ -1,6 +1,7 @@
 package com.team.androidpos.ui.sale;
 
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,6 +67,22 @@ public class SaleProductsFragment extends ListFragment {
             }
         });
 
+        SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setQueryHint("Search...");
+        View v = searchView.findViewById(androidx.appcompat.R.id.search_plate);
+        v.setBackgroundColor(Color.TRANSPARENT);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                viewModel.name.setValue(newText);
+                return true;
+            }
+        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -75,7 +93,7 @@ public class SaleProductsFragment extends ListFragment {
                 // TODO
                 Navigation.findNavController(getView()).navigate(R.id.action_saleProductsFragment_to_saleDetailFragment);
                 return true;
-            case R.id.action_filter:
+            case R.id.action_search:
                 // TODO
                 return true;
             case R.id.action_scan:
@@ -98,7 +116,7 @@ public class SaleProductsFragment extends ListFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel.categoryId.setValue(null);
+        viewModel.name.setValue(null);
         saleActionViewModel.init();
 
         MainActivity activity = (MainActivity) requireActivity();

@@ -5,18 +5,17 @@ import androidx.room.TypeConverter;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDateTime;
 
 public class TypeConverters {
 
     @TypeConverter
-    public static long fromDateTime(LocalDateTime dateTime) {
-        return dateTime.toDateTime(DateTimeZone.getDefault()).getMillis();
+    public static long fromDateTime(DateTime dateTime) {
+        return dateTime.getMillis();
     }
 
     @TypeConverter
-    public static LocalDateTime toDateTime(long value) {
-        return new DateTime(value, DateTimeZone.getDefault()).toLocalDateTime();
+    public static DateTime toDateTime(long value) {
+        return new DateTime(value, DateTimeZone.getDefault());
     }
 
 }

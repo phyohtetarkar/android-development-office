@@ -1,6 +1,12 @@
 package com.team.androidpos.ui.sale;
 
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.RectF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,10 +17,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
+import com.google.android.material.shape.CornerTreatment;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapePath;
+import com.google.android.material.shape.ShapePathModel;
 import com.team.androidpos.R;
 import com.team.androidpos.databinding.SaleReceiptBinding;
 import com.team.androidpos.model.entity.SaleProduct;
@@ -30,6 +41,21 @@ public class SaleReceiptFragment extends Fragment {
 
     private SaleReceiptBinding binding;
     private SaleReceiptViewModel viewModel;
+
+    static class ConcaveCornerTreatment extends CornerTreatment {
+        private float size;
+
+        public ConcaveCornerTreatment(float size) {
+            this.size = size;
+        }
+
+        @Override
+        public void getCornerPath(float angle, float interpolation, ShapePath shapePath) {
+            shapePath.reset(5f, 55);
+            shapePath.quadToPoint(55, 55 * interpolation, 55, 5);
+
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +92,19 @@ public class SaleReceiptFragment extends Fragment {
         binding.setLifecycleOwner(this);
         binding.setViewModel(viewModel);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ShapePathModel shapePathModel = new ShapePathModel();
+        shapePathModel.setAllCorners(new ConcaveCornerTreatment(0));
+        MaterialShapeDrawable shapeDrawable = new MaterialShapeDrawable(shapePathModel);
+        shapeDrawable.setTint(ContextCompat.getColor(requireContext(), R.color.colorPrimary));
+        shapeDrawable.setPaintStyle(Paint.Style.FILL);
+        shapeDrawable.setShadowEnabled(true);
+        shapeDrawable.setShadowColor(Color.BLACK);
+        binding.shapedCardView.setBackground(shapeDrawable);
     }
 
     @Override

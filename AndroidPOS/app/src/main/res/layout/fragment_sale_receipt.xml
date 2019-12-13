@@ -10,9 +10,10 @@
             type="com.team.androidpos.ui.sale.SaleReceiptViewModel" />
     </data>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="#e8f5e9">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,6 +22,7 @@
             android:padding="24dp">
 
             <com.team.androidpos.ui.ConcaveView
+                android:id="@+id/concaveView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -238,6 +240,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view4" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/shapedCardView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="24dp"
+            android:visibility="gone"/>
+    </LinearLayout>
 </layout>

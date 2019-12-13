@@ -2,18 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/action_cart"
-        android:title="Cart"
-        app:showAsAction="ifRoom"
-        app:actionLayout="@layout/layout_receipt_noti"/>
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search_dark"
+        android:orderInCategory="100"
+        android:title="Search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:iconTint="@android:color/white"
+        app:showAsAction="always|collapseActionView" />
 
     <item
-        android:id="@+id/action_filter"
-        android:title="Filter"
-        app:showAsAction="never"/>
+        android:id="@+id/action_cart"
+        android:orderInCategory="200"
+        android:title="Cart"
+        app:actionLayout="@layout/layout_receipt_noti"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_scan"
+        android:orderInCategory="300"
         android:title="Scan"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 </menu>

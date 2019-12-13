@@ -7,6 +7,7 @@ import androidx.paging.PagedList;
 import com.team.androidpos.model.dao.SaleDao;
 import com.team.androidpos.model.entity.Sale;
 import com.team.androidpos.model.entity.SaleProduct;
+import com.team.androidpos.model.vo.MonthlySaleReportVO;
 import com.team.androidpos.model.vo.SaleReportVO;
 
 import java.util.List;
@@ -37,6 +38,10 @@ public class SaleRepo {
 
     public LiveData<List<SaleReportVO>> findSaleReport() {
         return dao.findSaleReport();
+    }
+
+    public LiveData<List<MonthlySaleReportVO>> findMonthlyReport(int year) {
+        return dao.findMonthlyReport(year);
     }
 
 }

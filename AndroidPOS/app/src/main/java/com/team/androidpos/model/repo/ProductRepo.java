@@ -50,15 +50,15 @@ public class ProductRepo extends CudRepo<Product> {
         return new LivePagedListBuilder<>(dao.findProductAndCategory(), 25).build();
     }
 
-    public LiveData<PagedList<ProductAndCategoryVO>> getAvailableProduct(@Nullable Integer categoryId) {
+    public LiveData<PagedList<ProductAndCategoryVO>> getAvailableProduct(@Nullable String name) {
         StringBuilder sb = new StringBuilder("SELECT p.id, p.name, p.image, p.price, c.name AS category FROM Product p " +
                 "LEFT JOIN Category c ON p.category_id = c.id WHERE p.available = 1 ");
 
         List<Object> params = new ArrayList<>();
 
-        if (categoryId != null && categoryId > 0) {
-            sb.append("AND c.id = ? ");
-            params.add(categoryId);
+        if (name != null) {
+            sb.append("AND UPPER(p.name) LIKE ? ");
+            params.add(name.toUpperCase().concat("%"));
         }
 
         SimpleSQLiteQuery query = new SimpleSQLiteQuery(sb.toString(), params.toArray());

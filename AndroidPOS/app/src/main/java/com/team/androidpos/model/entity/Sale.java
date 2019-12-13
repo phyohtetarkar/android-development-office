@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey;
 
 import com.team.androidpos.BR;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDateTime;
 
 import java.util.Objects;
@@ -24,9 +25,11 @@ public class Sale extends BaseObservable {
     @ColumnInfo(name = "total_product")
     private int totalProduct;
     @ColumnInfo(name = "sale_date_time")
-    private LocalDateTime saleDateTime;
+    private DateTime saleDateTime;
     @ColumnInfo(name = "pay_price")
     private double payPrice;
+    private int year;
+    private int month;
     private double change;
 
     public long getId() {
@@ -61,11 +64,11 @@ public class Sale extends BaseObservable {
         this.totalProduct = totalProduct;
     }
 
-    public LocalDateTime getSaleDateTime() {
+    public DateTime getSaleDateTime() {
         return saleDateTime;
     }
 
-    public void setSaleDateTime(LocalDateTime saleDateTime) {
+    public void setSaleDateTime(DateTime saleDateTime) {
         this.saleDateTime = saleDateTime;
     }
 
@@ -86,6 +89,22 @@ public class Sale extends BaseObservable {
 
     public void setChange(double change) {
         this.change = change;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
     }
 
     public String getFormattedDateTime() {
