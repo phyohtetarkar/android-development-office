@@ -18,10 +18,10 @@ public class SaleProductsViewModel extends AndroidViewModel {
     private ProductRepo productRepo;
     private CategoryRepo categoryRepo;
 
-    final MutableLiveData<Integer> categoryId = new MutableLiveData<>();
+    final MutableLiveData<String> name = new MutableLiveData<>();
 
-    final LiveData<PagedList<ProductAndCategoryVO>> products = Transformations.switchMap(categoryId, id -> {
-        return productRepo.getAvailableProduct(id);
+    final LiveData<PagedList<ProductAndCategoryVO>> products = Transformations.switchMap(name, n -> {
+        return productRepo.getAvailableProduct(n);
     });
 
 

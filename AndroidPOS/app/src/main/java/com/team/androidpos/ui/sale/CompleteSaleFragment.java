@@ -46,6 +46,8 @@ public class CompleteSaleFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.btnCompleteSale.setOnClickListener(v -> {
+            MainActivity activity = (MainActivity) requireActivity();
+            activity.hideKeyboard();
             saleActionViewModel.finishSale();
         });
     }
